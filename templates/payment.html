@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M-Pesa Payment</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+      text-align: center;
+      margin-top: 50px;
+    }
+    form {
+      background: white;
+      display: inline-block;
+      padding: 20px 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input {
+      display: block;
+      margin: 10px auto;
+      padding: 8px;
+      width: 80%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #0f62fe;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0353e9;
+    }
+  </style>
+</head>
+<body>
+  <h2>Pay with M-Pesa</h2>
+  <form method="POST">
+    <label>Phone Number:</label>
+    <input type="text" name="phone" placeholder="e.g. 07XXXXXXXX" required>
+
+    <label>Amount (Ksh):</label>
+    <input type="text" name="amount" value="{{ amount }}" readonly>
+
+    <button type="submit">Pay Now</button>
+  </form>
+</body>
+</html>

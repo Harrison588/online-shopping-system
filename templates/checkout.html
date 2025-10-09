@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+      text-align: center;
+      padding: 30px;
+    }
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 60%;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+    th {
+      background-color: #0f62fe;
+      color: white;
+    }
+    .btn {
+     display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+      background-color: #0f62fe;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    .btn:hover {
+      background-color: #0353e9;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Checkout Page</h2>
+
+  {% if cart %}
+  <table>
+    <tr>
+      <th>Item</th>
+      <th>Price (Ksh)</th>
+    </tr>
+    {% for item in cart %}
+    <tr>
+      <td>{{ item.name }}</td>
+      <td>{{ item.price }}</td>
+     </tr>
+    {% endfor %}
+  </table>
+
+  <h3>Total: Ksh {{ total }}</h3>
+
+  <div>
+    <a href="{{ url_for('home') }}" class="btn">Continue Shopping</a>
+    <a href="{{ url_for('payment') }}" class="btn">Pay with M-Pesa</a>
+  </div>
+  {% else %}
+  <p>Your cart is empty!</p>
+  <a href="{{ url_for('home') }}" class="btn">Shop Now</a>
+  {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 15px;
+      text-align: center;
+    }
+    th {
+      background: #007bff;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background: #f2f2f2;
+    }
+    img {
+      width: 80px;
+      border-radius: 8px;
+    }
+    .total {
+      margin-top: 20px;
+      text-align: right;
+      font-size: 1.2em;
+    }
+    .btn {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+    }
+    .btn-remove {
+      background: #dc3545;
+    }
+    .btn-remove:hover {
+      background: #b52a38;
+    }
+    .btn-checkout {
+      background: #28a745;
+      text-decoration: none;
+       }
+    .btn-checkout:hover {
+      background: #1e7e34;
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Shopping Cart 🛒</h1>
+
+  {% if cart %}
+  <table>
+    <tr>
+      <th>Image</th>
+      <th>Product</th>
+      <th>Price (Ksh)</th>
+      <th>Action</th>
+    </tr>
+    {% for item in cart %}
+    <tr>
+      <td><img src="{{ item.image }}" alt="{{ item.name }}"></td>
+      <td>{{ item.name }}</td>
+      <td>{{ item.price }}</td>
+      <td>
+        <a href="{{ url_for('remove_from_cart', product_id=item.id) }}">
+          <button class="btn btn-remove">Remove</button>
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+   </table>
+
+  <div class="total">
+    <p><strong>Total:</strong> Ksh {{ total }}</p>
+    <a href="{{ url_for('checkout') }}" class="btn btn-checkout">Proceed to Checkout</a>
+  </div>
+
+  {% else %}
+  <p>Your cart is empty 😢</p>
+  {% endif %}
+
+  <div style="margin-top:20px;">
+    <a href="{{ url_for('home') }}">⬅ Back to Shop</a>
+  </div>
+</body>
+</html>

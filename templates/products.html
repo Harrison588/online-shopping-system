@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Products</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <h1>Shop Our Products</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/register">Register</a>
+      <a href="/products">Products</a>
+      <a href="/cart">Cart</a>
+      <a href="/checkout">Checkout</a>
+    </nav>
+  </header>
+
+  <main class="products-container">
+    {% for product in products %}
+    <div class="product-card">
+      <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
+      <h3>{{ product.name }}</h3>
+      <p>Price: Ksh {{ product.price }}</p>
+      <form action="/add_to_cart/{{ product.id }}" method="post">
+ <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+    {% endfor %}
+  </main>
+
+  <footer>
+    <p>© 2025 Online Shopping System | All rights reserved.</p>
+  </footer>
+</body>
+</html>
