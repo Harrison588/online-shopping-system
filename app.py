@@ -1,21 +1,24 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"  # Needed for session management
+app.secret_key = "supersecretkey"
 
-# 🛍 Sample product data (you can expand this)
+# 🛍 Sample product data
 products = [
     {"id": 1, "name": "Nike Air Max", "price": 3500, "image": "/static/nike air max.jpg"},
     {"id": 2, "name": "Adidas Hoodie", "price": 2500, "image": "/static/adidas hoodie.jpg"},
     {"id": 3, "name": "Apple Watch", "price": 12000, "image": "/static/apple watch.jpg"}
 ]
 
-# 🛒 Cart storage (simple list)
 cart = []
 
 @app.route('/')
+def index():
+    # Always start at registration
+    return redirect(url_for('register'))
+
+@app.route('/home')
 def home():
-    # Redirect to registration if user not registered
     if 'username' not in session:
         return redirect(url_for('register'))
     username = session.get('username')
@@ -56,13 +59,8 @@ def payment():
 def register():
     if request.method == "POST":
         username = request.form["name"]
-        email = request.form["email"]
-        password = request.form["password"]
-
-        # Store user in session
         session["username"] = username
         return redirect(url_for("home"))
-
     return render_template("register.html")
 
 @app.route("/logout")
