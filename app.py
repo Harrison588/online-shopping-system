@@ -1,7 +1,7 @@
-
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
+app.secret_key = "supersecretkey"  # Needed for session management
 
 # 🛍 Sample product data (you can expand this)
 products = [
@@ -15,7 +15,11 @@ cart = []
 
 @app.route('/')
 def home():
-    return render_template('home.html', products=products)
+    # Redirect to registration if user not registered
+    if 'username' not in session:
+        return redirect(url_for('register'))
+    username = session.get('username')
+    return render_template('home.html', products=products, username=username)
 
 @app.route('/add_to_cart/<int:product_id>')
 def add_to_cart(product_id):
@@ -29,7 +33,6 @@ def remove_from_cart(product_id):
     global cart
     cart = [item for item in cart if item["id"] != product_id]
     return redirect(url_for('view_cart'))
-
 
 @app.route('/cart')
 def view_cart():
@@ -52,10 +55,20 @@ def payment():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        username = request.form["username"]
+        username = request.form["name"]
         email = request.form["email"]
+        password = request.form["password"]
+
+        # Store user in session
+        session["username"] = username
         return redirect(url_for("home"))
+
     return render_template("register.html")
+
+@app.route("/logout")
+def logout():
+    session.pop("username", None)
+    return redirect(url_for("register"))
 
 if __name__ == "__main__":
     app.run(debug=True)
