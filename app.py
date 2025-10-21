@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"
+app.secret_key = 'supersecretkey'  # Required for sessions
 
 # 🛍 Sample product data
 products = [
@@ -10,19 +10,27 @@ products = [
     {"id": 3, "name": "Apple Watch", "price": 12000, "image": "/static/apple watch.jpg"}
 ]
 
+# 🛒 Cart storage
 cart = []
 
 @app.route('/')
-def index():
-    # Always start at registration
+def home():
+    if 'username' in session:
+        return render_template('home.html', products=products, username=session['username'])
     return redirect(url_for('register'))
 
-@app.route('/home')
-def home():
-    if 'username' not in session:
-        return redirect(url_for('register'))
-    username = session.get('username')
-    return render_template('home.html', products=products, username=username)
+@app.route('/register', methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        session['username'] = request.form["name"]
+        session['email'] = request.form["email"]
+        return redirect(url_for('home'))
+    return render_template('register.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('register'))
 
 @app.route('/add_to_cart/<int:product_id>')
 def add_to_cart(product_id):
@@ -54,19 +62,6 @@ def payment():
         phone = request.form["phone"]
         return render_template("success.html", phone=phone, amount=amount)
     return render_template("payment.html", amount=amount)
-
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    if request.method == "POST":
-        username = request.form["name"]
-        session["username"] = username
-        return redirect(url_for("home"))
-    return render_template("register.html")
-
-@app.route("/logout")
-def logout():
-    session.pop("username", None)
-    return redirect(url_for("register"))
 
 if __name__ == "__main__":
     app.run(debug=True)
